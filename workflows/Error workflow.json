@@ -1,0 +1,71 @@
+{
+  "name": "Error workflow WNDRLST",
+  "nodes": [
+    {
+      "parameters": {
+        "chatId": "your_chat_id",
+        "text": "=<b>ОШИБКА В N8N SEVENTY</b>\n\n<b>Сценарий:</b> {{ $json.workflow.name }}\n<b>Причина:</b> {{ $json.execution.error.message }}\n<b>Сломалось на шаге:</b> {{ $json.execution.lastNodeExecuted }}\n\n<a href=\"{{ $json.execution.url }}\">Открыть лог ошибки</a>",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        256,
+        0
+      ],
+      "id": "3d373007-dbb5-4e2a-97ff-6fc00be76d32",
+      "name": "Send a text message",
+      "webhookId": "54eefdd2-5556-4530-95a4-94c1b3f761df",
+      "credentials": {
+        "telegramApi": {
+          "id": "05lWY1AcOr6oIvLl",
+          "name": "Telegram Partners"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f66f1813-be78-491c-9e6d-191c2a730e2c",
+      "name": "Error Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Asia/Almaty",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "d5f0e4c7-d35f-4fc6-b0f8-c102c1a4a840",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "03b67b3e60aa493ec1244124aace506e5b72662a5ebfe65ae58c0d351a372da8"
+  },
+  "id": "ndD0B0ITMXxjXacm",
+  "tags": []
+}
