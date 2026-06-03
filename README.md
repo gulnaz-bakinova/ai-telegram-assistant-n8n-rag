@@ -85,50 +85,7 @@
 
 ### Шаг 1. Подготовка базы данных в Supabase
 1. Создайте проект в Supabase.
-2. Перейдите в **SQL Editor** и выполните следующий SQL-запрос для инициализации расширения векторов, таблицы документов и функции поиска:
-
-```sql
--- Включаем расширение pgvector для работы с векторами
-create extension if not exists vector;
-
--- Создаем таблицу для документов (3072 измерения для Gemini Embeddings)
-create table documents (
-  id bigserial primary key,
-  content text,
-  metadata jsonb,
-  embedding vector(3072)
-);
-
--- Создаем функцию поиска (совместимую с n8n и LangChain)
-create or replace function match_documents (
-  query_embedding vector(3072),
-  match_threshold float default 0.2,
-  match_count int default null,
-  filter jsonb default '{}'
-)
-returns table (
-  id bigint,
-  content text,
-  metadata jsonb,
-  similarity float
-)
-language plpgsql stable
-as $$
-begin
-  return query
-  select
-    documents.id,
-    documents.content,
-    documents.metadata,
-    1 - (documents.embedding <=> query_embedding) as similarity
-  from documents
-  where documents.metadata @> filter 
-    and 1 - (documents.embedding <=> query_embedding) > match_threshold
-  order by documents.embedding <=> query_embedding
-  limit match_count;
-end;
-$$;
-````
+2. Перейдите в **SQL Editor** и выполните SQL-запрос из файла schema.sql для инициализации расширения векторов, таблицы документов и функции поиска:
 
 ## Шаг 2. Импорт воркфлоу в n8n
 
